@@ -281,3 +281,8 @@ variable "wait_for_deployment" {
   default     = "true"
   description = "When set to 'true' the resource will wait for the distribution status to change from InProgress to Deployed"
 }
+
+variable "s3_bucket_access_userids" {
+  type = "list"
+  description = "The ID's (either role or user) that are allowed access to the bucket in addition to cloudfront. See https://aws.amazon.com/blogs/security/how-to-restrict-amazon-s3-bucket-access-to-a-specific-iam-role/"  
+}

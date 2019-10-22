@@ -13,6 +13,22 @@ resource "aws_cloudfront_origin_access_identity" "default" {
 }
 
 data "aws_iam_policy_document" "origin" {
+
+  statement {
+    actions = ["s3:*"]
+    not_principals {
+      type        = "AWS"
+      identifiers = ["${aws_cloudfront_origin_access_identity.default.iam_arn}"]
+    }
+    effect = "Deny"
+    resources = ["arn:aws:s3:::$${bucket_name}", "arn:aws:s3:::$${bucket_name}/*"]
+    condition {
+      test = "StringNotLike"
+      variable = "aws:userId"
+      values = "${var.s3_bucket_access_userids}"
+    }
+  }
+  
   statement {
     actions   = ["s3:GetObject"]
     resources = ["arn:aws:s3:::$${bucket_name}$${origin_path}*"]
