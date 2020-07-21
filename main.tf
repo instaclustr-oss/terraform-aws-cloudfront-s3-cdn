@@ -118,11 +118,10 @@ locals {
 }
 
 resource "aws_cloudfront_distribution" "default" {
-  count               = "${length(var.default_root_object)}"
   enabled             = "${var.enabled}"
   is_ipv6_enabled     = "${var.is_ipv6_enabled}"
   comment             = "${var.comment}"
-  default_root_object = "${var.default_root_object[count.index]}"
+  default_root_object = "${var.default_root_object}"
   price_class         = "${var.price_class}"
   depends_on          = ["aws_s3_bucket.origin"]
 
@@ -132,7 +131,7 @@ resource "aws_cloudfront_distribution" "default" {
     prefix          = "${var.log_prefix}"
   }
 
-  aliases = ["${var.aliases}"] //change it to a list later
+  aliases = ["${var.aliases}"]
 
   origin {
     domain_name = "${local.bucket_domain_name}"
