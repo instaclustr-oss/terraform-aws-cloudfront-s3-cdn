@@ -117,7 +117,7 @@ locals {
   bucket_domain_name = "${var.use_regional_s3_endpoint == "true" ? format("%s.s3-%s.amazonaws.com" , local.bucket, data.aws_s3_bucket.selected.region): format(var.bucket_domain_format, local.bucket)}"
 }
 
-resource "aws_cloudfront_distribution" "default" {z
+resource "aws_cloudfront_distribution" "default" {
   enabled             = "${var.enabled}"
   is_ipv6_enabled     = "${var.is_ipv6_enabled}"
   comment             = "${var.comment}"
