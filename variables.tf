@@ -90,8 +90,7 @@ variable "is_ipv6_enabled" {
 }
 
 variable "default_root_object" {
-  type        = "list"
-  default     = ["index.html"]
+  default     = "index.html"
   description = "Object that CloudFront return when requests the root URL"
 }
 
