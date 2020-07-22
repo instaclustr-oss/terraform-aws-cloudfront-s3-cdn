@@ -65,7 +65,9 @@ resource "aws_s3_bucket_policy" "default" {
 }
 
 data "aws_region" "current" {}
-
+locals {
+  cors_aliases_origin = [for aliase in var.aliases : "${aliase}"]
+}
 resource "aws_s3_bucket" "origin" {
   count         = "${signum(length(var.origin_bucket)) == 1 ? 0 : 1}"
   bucket        = "${module.origin_label.id}"
@@ -77,7 +79,7 @@ resource "aws_s3_bucket" "origin" {
   cors_rule {
     allowed_headers = "${var.cors_allowed_headers}"
     allowed_methods = "${var.cors_allowed_methods}"
-    allowed_origins = "${sort(distinct(compact(concat(var.cors_allowed_origins, var.aliases))))}"
+    allowed_origins = "${sort(distinct(compact(concat(var.cors_allowed_origins, local.cors_aliases_origin))))}"
     expose_headers  = "${var.cors_expose_headers}"
     max_age_seconds = "${var.cors_max_age_seconds}"
   }
@@ -132,7 +134,7 @@ resource "aws_cloudfront_distribution" "default" {
     prefix          = "${var.log_prefix}"
   }
 
-  aliases = ["${var.aliases}"]
+  aliases = ["${var.aliases[count.index]}"]
 
   origin {
     domain_name = "${local.bucket_domain_name}"
