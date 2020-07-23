@@ -52,6 +52,12 @@ variable "aliases" {
   default     = {}
 }
 
+variable "cors_aliases_origin" {
+  type = "list"
+  description = "List of FQDN's - Used to set the Alternate Domain Names (CNAMEs) setting on Cloudfront"
+  default     = []
+}
+
 variable "use_regional_s3_endpoint" {
   type        = "string"
   description = "When set to 'true' the s3 origin_bucket will use the regional endpoint address instead of the global endpoint address"
