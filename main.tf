@@ -65,8 +65,9 @@ resource "aws_s3_bucket_policy" "default" {
 }
 
 data "aws_region" "current" {}
+
 locals {
-  cors_aliases_origin = [for index, aliase in var.aliases : "${aliase}"]
+  cors_aliases_origin = [for index, aliase in var.aliases : aliase]
 }
 resource "aws_s3_bucket" "origin" {
   count         = "${signum(length(var.origin_bucket)) == 1 ? 0 : 1}"
